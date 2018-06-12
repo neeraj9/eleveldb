@@ -34,14 +34,14 @@
 
 #include "eleveldb.h"
 
-#include "leveldb/db.h"
-#include "leveldb/comparator.h"
-#include "leveldb/env.h"
-#include "leveldb/expiry.h"
-#include "leveldb/write_batch.h"
-#include "leveldb/cache.h"
-#include "leveldb/filter_policy.h"
-#include "leveldb/perf_count.h"
+#include "pebblesdb/db.h"
+#include "pebblesdb/comparator.h"
+#include "pebblesdb/env.h"
+#include "pebblesdb/expiry.h"
+#include "pebblesdb/write_batch.h"
+#include "pebblesdb/cache.h"
+#include "pebblesdb/filter_policy.h"
+#include "pebblesdb/perf_count.h"
 #define LEVELDB_PLATFORM_POSIX
 #include "util/hot_threads.h"
 #include "util/expiry_os.h"
@@ -60,7 +60,7 @@
 
 #include "work_result.hpp"
 
-#include "leveldb/atomics.h"
+#include "pebblesdb/atomics.h"
 
 static ErlNifFunc nif_funcs[] =
 {

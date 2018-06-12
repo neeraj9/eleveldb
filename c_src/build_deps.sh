@@ -32,13 +32,13 @@ MAKE=${MAKE:-make}
 
 case "$1" in
     rm-deps)
-        rm -rf leveldb system snappy-$SNAPPY_VSN
+        rm -rf pebblesdb system snappy-$SNAPPY_VSN
         ;;
 
     clean)
         rm -rf system snappy-$SNAPPY_VSN
-        if [ -d leveldb ]; then
-            (cd leveldb && $MAKE clean)
+        if [ -d pebblesdb ]; then
+            (cd pebblesdb && $MAKE clean)
         fi
         rm -f ../priv/leveldb_repair ../priv/sst_scan ../priv/sst_rewrite ../priv/perf_dump
         ;;
@@ -50,17 +50,18 @@ case "$1" in
         export LD_LIBRARY_PATH="$BASEDIR/system/lib:$LD_LIBRARY_PATH"
         export LEVELDB_VSN="$LEVELDB_VSN"
 
-        (cd leveldb && $MAKE check)
+        (cd pebblesdb && $MAKE check)
 
         ;;
 
     get-deps)
-        if [ ! -d leveldb ]; then
-            git clone git://github.com/basho/leveldb
-            (cd leveldb && git checkout $LEVELDB_VSN)
+        if [ ! -d pebblesdb ]; then
+            git clone git://github.com/utsaslab/pebblesdb
+            (cd pebblesdb && git checkout $LEVELDB_VSN)
             if [ "$BASHO_EE" = "1" ]; then
-                (cd leveldb && git submodule update --init)
+                (cd pebblesdb && git submodule update --init)
             fi
+            (cd pebblesdb && autoreconf -ivfs && ./configure)
         fi
         ;;
 
@@ -82,21 +83,23 @@ case "$1" in
         export LD_LIBRARY_PATH="$BASEDIR/system/lib:$LD_LIBRARY_PATH"
         export LEVELDB_VSN="$LEVELDB_VSN"
 
-        if [ ! -d leveldb ]; then
-            git clone git://github.com/basho/leveldb
-            (cd leveldb && git checkout $LEVELDB_VSN)
+        if [ ! -d pebblesdb ]; then
+            git clone git://github.com/utsaslab/pebblesdb
+            (cd pebblesdb && git checkout $LEVELDB_VSN)
             if [ $BASHO_EE = "1" ]; then
-                (cd leveldb && git submodule update --init)
+                (cd pebblesdb && git submodule update --init)
             fi
+            (cd pebblesdb && autoreconf -ivfs && ./configure)
         fi
 
         # hack issue where high level make is running -j 4
-        #  and causes build errors in leveldb
+        #  and causes build errors in pebblesdb
         export MAKEFLAGS=
 
-        (cd leveldb && $MAKE -j 3 all)
-        (cd leveldb && $MAKE -j 3 tools)
-        (cp leveldb/perf_dump leveldb/sst_rewrite leveldb/sst_scan leveldb/leveldb_repair ../priv)
+        (cd pebblesdb && $MAKE -j 3 all)
+        (cd pebblesdb && $MAKE -j 3 tools)
+        #(cp pebblesdb/perf_dump pebblesdb/sst_rewrite pebblesdb/sst_scan pebblesdb/leveldb_repair ../priv)
+        (cp pebblesdb/.libs/leveldb_repair ../priv)
 
         ;;
 esac
