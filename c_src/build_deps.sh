@@ -56,7 +56,7 @@ case "$1" in
 
     get-deps)
         if [ ! -d pebblesdb ]; then
-            git clone git://github.com/utsaslab/pebblesdb
+            git clone git://github.com/neeraj9/pebblesdb
             (cd pebblesdb && git checkout $LEVELDB_VSN)
             if [ "$BASHO_EE" = "1" ]; then
                 (cd pebblesdb && git submodule update --init)
@@ -84,7 +84,7 @@ case "$1" in
         export LEVELDB_VSN="$LEVELDB_VSN"
 
         if [ ! -d pebblesdb ]; then
-            git clone git://github.com/utsaslab/pebblesdb
+            git clone git://github.com/neeraj9/pebblesdb
             (cd pebblesdb && git checkout $LEVELDB_VSN)
             if [ $BASHO_EE = "1" ]; then
                 (cd pebblesdb && git submodule update --init)
