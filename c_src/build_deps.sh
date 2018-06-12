@@ -97,7 +97,7 @@ case "$1" in
         export MAKEFLAGS=
 
         (cd pebblesdb && $MAKE -j 3 all)
-        (cd pebblesdb && $MAKE -j 3 tools)
+        #(cd pebblesdb && $MAKE -j 3 tools)
         #(cp pebblesdb/perf_dump pebblesdb/sst_rewrite pebblesdb/sst_scan pebblesdb/leveldb_repair ../priv)
         (cp pebblesdb/.libs/leveldb_repair ../priv)
 
